@@ -73,7 +73,7 @@ function InitialLayout() {
   useEffect(() => {
     if (!isLoaded || !_hasHydrated) return;
 
-    const inAuthGroup = segments[0] === "signin" || segments[0] === "signup" || segments[0] === "onboarding";
+    const inAuthGroup = segments[0] === "signin" || segments[0] === "signup" || segments[0] === "onboarding" || segments[0] === "verify-otp";
     const onChooseLanguage = segments[0] === "choose-language";
 
     if (isSignedIn) {

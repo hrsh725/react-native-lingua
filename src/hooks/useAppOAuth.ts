@@ -64,7 +64,7 @@ export const useAppOAuth = (options: { strategy: "oauth_google" | "oauth_faceboo
               shouldProcess = true;
               popupUrl = href;
             }
-          } catch (e) {
+          } catch {
             // Ignore cross-origin errors during polling
             return;
           }

@@ -49,8 +49,11 @@ export default function SignUp() {
       } else {
         // Handle next steps such as MFA
       }
-    } catch (err) {
-      console.error("OAuth error", err);
+    } catch (err: any) {
+      console.warn("OAuth error:", err);
+      if (err?.message !== "Flow cancelled by user" && err?.message?.indexOf("cancelled") === -1) {
+        setVerificationError(err?.message || "OAuth failed");
+      }
     }
   }, [startGoogleOAuthFlow, startFacebookOAuthFlow, startAppleOAuthFlow]);
 
@@ -68,13 +71,28 @@ export default function SignUp() {
         if (!sendError) {
           setShowModal(true);
         } else {
-          console.error(JSON.stringify(sendError, null, 2));
+          console.warn("sendEmailCode error:", sendError);
+          setVerificationError(
+            (sendError as any).errors?.[0]?.longMessage || 
+            sendError.message || 
+            "Failed to send verification code"
+          );
         }
       } else {
-        console.error(JSON.stringify(createError, null, 2));
+        console.warn("signUp.password error:", createError);
+        setVerificationError(
+          (createError as any).errors?.[0]?.longMessage || 
+          createError.message || 
+          "Failed to create account"
+        );
       }
-    } catch (err) {
-      console.error(JSON.stringify(err, null, 2));
+    } catch (err: any) {
+      console.warn("SignUp press error:", err);
+      setVerificationError(
+        err.errors?.[0]?.longMessage || 
+        err.message || 
+        "An error occurred"
+      );
     }
   };
 
@@ -185,6 +203,13 @@ export default function SignUp() {
             </TouchableOpacity>
           </View>
         </View>
+
+        {/* Error message */}
+        {verificationError ? (
+          <Text className="text-red-500 font-poppins text-[14px] mb-4 text-center">
+            {verificationError}
+          </Text>
+        ) : null}
 
         {/* Sign Up Button */}
         <TouchableOpacity

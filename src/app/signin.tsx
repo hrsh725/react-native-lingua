@@ -45,8 +45,11 @@ export default function SignIn() {
       } else {
         // Handle next steps such as MFA
       }
-    } catch (err) {
-      console.error("OAuth error", err);
+    } catch (err: any) {
+      console.warn("OAuth error:", err);
+      if (err?.message !== "Flow cancelled by user" && err?.message?.indexOf("cancelled") === -1) {
+        setVerificationError(err?.message || "OAuth failed");
+      }
     }
   }, [startGoogleOAuthFlow, startFacebookOAuthFlow, startAppleOAuthFlow]);
 
@@ -61,10 +64,20 @@ export default function SignIn() {
       if (!error) {
         setShowModal(true);
       } else {
-        console.error(JSON.stringify(error, null, 2));
+        console.warn("signIn.emailCode.sendCode error:", error);
+        setVerificationError(
+          (error as any).errors?.[0]?.longMessage || 
+          error.message || 
+          "Failed to send verification code"
+        );
       }
-    } catch (err) {
-      console.error(JSON.stringify(err, null, 2));
+    } catch (err: any) {
+      console.warn("SignIn press error:", err);
+      setVerificationError(
+        err.errors?.[0]?.longMessage || 
+        err.message || 
+        "An error occurred"
+      );
     }
   };
 
@@ -147,6 +160,13 @@ export default function SignIn() {
             placeholderTextColor="#9CA3AF"
           />
         </View>
+
+        {/* Error message */}
+        {verificationError ? (
+          <Text className="text-red-500 font-poppins text-[14px] mb-4 text-center">
+            {verificationError}
+          </Text>
+        ) : null}
 
         {/* Sign In Button */}
         <TouchableOpacity

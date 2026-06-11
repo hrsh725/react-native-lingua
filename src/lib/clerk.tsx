@@ -6,10 +6,12 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Determine if we should use Mock Auth
-const isMockMode =
+export const isMockMode =
+  process.env.EXPO_PUBLIC_USE_MOCK_AUTH === "true" ||
   !process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY ||
   process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY.startsWith("your_clerk") ||
   process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY.startsWith("pk_test_Y2xlcmsubW9kZXJuLmFwcHMuZGV2JA");
+
 
 interface MockAuthContextType {
   isSignedIn: boolean;
@@ -136,10 +138,10 @@ export function useUser() {
     user: isSignedIn
       ? {
           id: "mock-user-123",
-          firstName: userEmail.split("@")[0] || "Learner",
-          fullName: userEmail.split("@")[0] || "Learner",
+          firstName: (userEmail || "learner@example.com").split("@")[0] || "Learner",
+          fullName: (userEmail || "learner@example.com").split("@")[0] || "Learner",
           imageUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150",
-          emailAddresses: [{ emailAddress: userEmail }],
+          emailAddresses: [{ emailAddress: userEmail || "learner@example.com" }],
         }
       : null,
   } as unknown as ReturnType<typeof RealClerk.useUser>;
@@ -148,7 +150,73 @@ export function useUser() {
 // useSignIn Wrapper
 export function useSignIn() {
   if (!isMockMode) {
-    return RealClerk.useSignIn();
+    const { signIn, setActive, isLoaded, ...rest } = RealClerk.useSignIn() as any;
+    const state = { current: signIn };
+    const wrappedSignIn = signIn ? new Proxy(signIn, {
+      get(target, prop, receiver) {
+        if (prop === 'finalize') {
+          return async (params: { navigate: () => void }) => {
+            if (setActive && state.current.createdSessionId) {
+              await setActive({ session: state.current.createdSessionId });
+            }
+            params.navigate();
+            return { error: null };
+          };
+        }
+        if (prop === 'emailCode') {
+          return {
+            sendCode: async (params: { emailAddress: string }) => {
+              try {
+                const res1 = await state.current.create({
+                  identifier: params.emailAddress,
+                });
+                if (res1 && res1.error) {
+                  return { error: res1.error };
+                }
+                state.current = res1;
+                const res2 = await state.current.prepareFirstFactor({
+                  strategy: 'email_code',
+                  emailAddress: params.emailAddress,
+                });
+                if (res2 && res2.error) {
+                  return { error: res2.error };
+                }
+                state.current = res2;
+                return { error: null };
+              } catch (err: any) {
+                return { error: err };
+              }
+            },
+            verifyCode: async (params: { code: string }) => {
+              try {
+                const res = await state.current.attemptFirstFactor({
+                  strategy: 'email_code',
+                  code: params.code,
+                });
+                if (res && res.error) {
+                  return { error: res.error };
+                }
+                state.current = res;
+                return { error: null, result: res };
+              } catch (err: any) {
+                return { error: err };
+              }
+            }
+          };
+        }
+        const value = Reflect.get(state.current, prop, receiver);
+        if (typeof value === 'function') {
+          return value.bind(state.current);
+        }
+        return value;
+      }
+    }) : signIn;
+    return {
+      signIn: wrappedSignIn,
+      setActive,
+      isLoaded,
+      ...rest
+    } as unknown as ReturnType<typeof RealClerk.useSignIn>;
   }
    
   const { setIsSignedIn, setUserEmail } = useContext(MockAuthContext);
@@ -170,8 +238,27 @@ export function useSignIn() {
       params.navigate();
       return { error: null };
     },
-    create: async (params: any) => {
-      return { error: null };
+    create: async (params: { identifier: string; strategy?: string; password?: string }) => {
+      await setUserEmail(params.identifier);
+      if (params.strategy === "email_code") {
+        signInMock.status = "needs_first_factor";
+        return { status: "needs_first_factor", error: null };
+      }
+      signInMock.status = "complete";
+      return { error: null, status: "complete" };
+    },
+    prepareFirstFactor: async (params: { strategy: string; emailAddress?: string }) => {
+      signInMock.status = "needs_first_factor";
+      return { status: "needs_first_factor", error: null };
+    },
+    attemptFirstFactor: async (params: { strategy: string; code: string }) => {
+      if (params.code === "123456") {
+        signInMock.status = "complete";
+        return { status: "complete", createdSessionId: "mock-session-123" };
+      }
+      throw {
+        errors: [{ longMessage: "Incorrect code. Please try again." }],
+      };
     },
     reload: async (params: any) => {
       return { error: null };
@@ -196,32 +283,128 @@ export function useSignIn() {
 // useSignUp Wrapper
 export function useSignUp() {
   if (!isMockMode) {
-    return RealClerk.useSignUp();
+    const { signUp, setActive, isLoaded, ...rest } = RealClerk.useSignUp() as any;
+    const state = { current: signUp };
+    const wrappedSignUp = signUp ? new Proxy(signUp, {
+      get(target, prop, receiver) {
+        if (prop === 'password') {
+          return async (params: { emailAddress: string; password: string }) => {
+            try {
+              const res = await state.current.create({
+                emailAddress: params.emailAddress,
+                password: params.password,
+              });
+              if (res && res.error) {
+                return { error: res.error };
+              }
+              state.current = res;
+              return { error: null };
+            } catch (err: any) {
+              return { error: err };
+            }
+          };
+        }
+        if (prop === 'finalize') {
+          return async (params: { navigate: () => void }) => {
+            if (setActive && state.current.createdSessionId) {
+              await setActive({ session: state.current.createdSessionId });
+            }
+            params.navigate();
+            return { error: null };
+          };
+        }
+        if (prop === 'verifications') {
+          return {
+            // Prepare (send) the email OTP
+            sendEmailCode: async () => {
+              try {
+                const res = await state.current.prepareEmailAddressVerification({ strategy: 'email_code' });
+                if (res && res.error) {
+                  return { error: res.error };
+                }
+                state.current = res;
+                return { error: null };
+              } catch (err: any) {
+                return { error: err };
+              }
+            },
+            // Verify the OTP the user typed
+            verifyEmailCode: async (params: { code: string }) => {
+              try {
+                const res = await state.current.attemptEmailAddressVerification({ code: params.code });
+                if (res && res.error) {
+                  return { error: res.error };
+                }
+                state.current = res;
+                return { error: null, result: res };
+              } catch (err: any) {
+                return { error: err };
+              }
+            }
+          };
+        }
+        const value = Reflect.get(state.current, prop, receiver);
+        if (typeof value === 'function') {
+          return value.bind(state.current);
+        }
+        return value;
+      }
+    }) : signUp;
+    return {
+      signUp: wrappedSignUp,
+      setActive,
+      isLoaded,
+      ...rest
+    } as unknown as ReturnType<typeof RealClerk.useSignUp>;
   }
    
   const { setIsSignedIn, setUserEmail } = useContext(MockAuthContext);
 
   const signUpMock = {
     status: "needs_verification",
+    // Legacy mock method (kept for backward compat)
     password: async (params: { emailAddress: string; password?: string }) => {
       await setUserEmail(params.emailAddress);
+      signUpMock.status = "needs_verification";
       return { error: null };
     },
+    // Real Clerk API: called by signup.tsx
+    create: async (params: { emailAddress?: string; password?: string }) => {
+      if (params.emailAddress) await setUserEmail(params.emailAddress);
+      signUpMock.status = "needs_verification";
+      return { status: "needs_verification", error: null };
+    },
+    // Real Clerk API: sends OTP to email (mock — just returns success)
+    prepareEmailAddressVerification: async (params: { strategy: string }) => {
+      console.log("[MOCK] OTP would be sent to email. Use code: 123456");
+      return { error: null };
+    },
+    // Real Clerk API: verifies the OTP code entered by user
+    attemptEmailAddressVerification: async (params: { code: string }) => {
+      if (params.code === "123456") {
+        signUpMock.status = "complete";
+        return { status: "complete", createdSessionId: "mock-session-123" };
+      }
+      throw {
+        errors: [{ longMessage: "Incorrect code. Please try again." }],
+      };
+    },
+    // Legacy verifications proxy support
     verifications: {
       sendEmailCode: async () => {
         return { error: null };
       },
       verifyEmailCode: async (params: { code: string }) => {
-        signUpMock.status = "complete";
-        return { error: null };
+        if (params.code === "123456") {
+          signUpMock.status = "complete";
+          return { error: null };
+        }
+        return { error: { message: "Invalid OTP. Please try again." } };
       },
     },
     finalize: async (params: { navigate: () => void }) => {
       await setIsSignedIn(true);
       params.navigate();
-      return { error: null };
-    },
-    create: async (params: any) => {
       return { error: null };
     },
     createdSessionId: "mock-session-123",
@@ -240,7 +423,59 @@ export function useSignUp() {
 // useSignInLegacy Wrapper
 export function useSignInLegacy() {
   if (!isMockMode) {
-    return RealClerkLegacy.useSignIn();
+    const { signIn, setActive, ...rest } = RealClerkLegacy.useSignIn() as any;
+    const wrappedSignIn = signIn ? new Proxy(signIn, {
+      get(target, prop, receiver) {
+        if (prop === 'finalize') {
+          return async (params: { navigate: () => void }) => {
+            if (setActive && target.createdSessionId) {
+              await setActive({ session: target.createdSessionId });
+            }
+            params.navigate();
+            return { error: null };
+          };
+        }
+        if (prop === 'emailCode') {
+          return {
+            sendCode: async (params: { emailAddress: string }) => {
+              try {
+                await target.create({
+                  identifier: params.emailAddress,
+                });
+                await target.prepareFirstFactor({
+                  strategy: 'email_code',
+                  emailAddress: params.emailAddress,
+                });
+                return { error: null };
+              } catch (err: any) {
+                return { error: err };
+              }
+            },
+            verifyCode: async (params: { code: string }) => {
+              try {
+                const result = await target.attemptFirstFactor({
+                  strategy: 'email_code',
+                  code: params.code,
+                });
+                return { error: null, result };
+              } catch (err: any) {
+                return { error: err };
+              }
+            }
+          };
+        }
+        const value = Reflect.get(target, prop, receiver);
+        if (typeof value === 'function') {
+          return value.bind(target);
+        }
+        return value;
+      }
+    }) : signIn;
+    return {
+      signIn: wrappedSignIn,
+      setActive,
+      ...rest
+    } as unknown as ReturnType<typeof RealClerkLegacy.useSignIn>;
   }
    
   const { setIsSignedIn, setUserEmail } = useContext(MockAuthContext);
@@ -262,8 +497,27 @@ export function useSignInLegacy() {
       params.navigate();
       return { error: null };
     },
-    create: async (params: any) => {
-      return { error: null };
+    create: async (params: { identifier: string; strategy?: string; password?: string }) => {
+      await setUserEmail(params.identifier);
+      if (params.strategy === "email_code") {
+        signInMock.status = "needs_first_factor";
+        return { status: "needs_first_factor", error: null };
+      }
+      signInMock.status = "complete";
+      return { error: null, status: "complete" };
+    },
+    prepareFirstFactor: async (params: { strategy: string; emailAddress?: string }) => {
+      signInMock.status = "needs_first_factor";
+      return { status: "needs_first_factor", error: null };
+    },
+    attemptFirstFactor: async (params: { strategy: string; code: string }) => {
+      if (params.code === "123456") {
+        signInMock.status = "complete";
+        return { status: "complete", createdSessionId: "mock-session-123" };
+      }
+      throw {
+        errors: [{ longMessage: "Incorrect code. Please try again." }],
+      };
     },
     reload: async (params: any) => {
       return { error: null };
@@ -286,7 +540,63 @@ export function useSignInLegacy() {
 // useSignUpLegacy Wrapper
 export function useSignUpLegacy() {
   if (!isMockMode) {
-    return RealClerkLegacy.useSignUp();
+    const { signUp, setActive, ...rest } = RealClerkLegacy.useSignUp() as any;
+    const wrappedSignUp = signUp ? new Proxy(signUp, {
+      get(target, prop, receiver) {
+        if (prop === 'password') {
+          return async (params: { emailAddress: string; password: string }) => {
+            try {
+              await target.create({
+                emailAddress: params.emailAddress,
+                password: params.password,
+              });
+              return { error: null };
+            } catch (err: any) {
+              return { error: err };
+            }
+          };
+        }
+        if (prop === 'finalize') {
+          return async (params: { navigate: () => void }) => {
+            if (setActive && target.createdSessionId) {
+              await setActive({ session: target.createdSessionId });
+            }
+            params.navigate();
+            return { error: null };
+          };
+        }
+        if (prop === 'verifications') {
+          return {
+            sendEmailCode: async () => {
+              try {
+                await target.prepareEmailAddressVerification({ strategy: 'email_code' });
+                return { error: null };
+              } catch (err: any) {
+                return { error: err };
+              }
+            },
+            verifyEmailCode: async (params: { code: string }) => {
+              try {
+                const result = await target.attemptEmailAddressVerification({ code: params.code });
+                return { error: null, result };
+              } catch (err: any) {
+                return { error: err };
+              }
+            }
+          };
+        }
+        const value = Reflect.get(target, prop, receiver);
+        if (typeof value === 'function') {
+          return value.bind(target);
+        }
+        return value;
+      }
+    }) : signUp;
+    return {
+      signUp: wrappedSignUp,
+      setActive,
+      ...rest
+    } as unknown as ReturnType<typeof RealClerkLegacy.useSignUp>;
   }
    
   const { setIsSignedIn, setUserEmail } = useContext(MockAuthContext);
@@ -295,6 +605,7 @@ export function useSignUpLegacy() {
     status: "needs_verification",
     password: async (params: { emailAddress: string; password?: string }) => {
       await setUserEmail(params.emailAddress);
+      signUpMock.status = "needs_verification";
       return { error: null };
     },
     verifications: {
@@ -302,8 +613,11 @@ export function useSignUpLegacy() {
         return { error: null };
       },
       verifyEmailCode: async (params: { code: string }) => {
-        signUpMock.status = "complete";
-        return { error: null };
+        if (params.code === "123456") {
+          signUpMock.status = "complete";
+          return { error: null };
+        }
+        return { error: { message: "Invalid OTP. Please try again." } };
       },
     },
     finalize: async (params: { navigate: () => void }) => {
