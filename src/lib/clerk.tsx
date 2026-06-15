@@ -6,11 +6,20 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Determine if we should use Mock Auth
-export const isMockMode =
-  process.env.EXPO_PUBLIC_USE_MOCK_AUTH === "true" ||
-  !process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY ||
-  process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY.startsWith("your_clerk") ||
-  process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY.startsWith("pk_test_Y2xlcmsubW9kZXJuLmFwcHMuZGV2JA");
+const getIsMockMode = () => {
+  const useMock = process.env.EXPO_PUBLIC_USE_MOCK_AUTH;
+  const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+  if (useMock === "true") return true;
+  if (!publishableKey || publishableKey.includes("placeholder") || publishableKey.startsWith("your_clerk")) return true;
+
+  // Specific internal test key
+  if (publishableKey.startsWith("pk_test_Y2xlcmsubW9kZXJuLmFwcHMuZGV2JA")) return true;
+
+  return false;
+};
+
+export const isMockMode = getIsMockMode();
 
 
 interface MockAuthContextType {

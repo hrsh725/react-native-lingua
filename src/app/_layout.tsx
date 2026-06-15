@@ -1,12 +1,13 @@
 import "../../global.css";
 
 import { useEffect, useRef } from "react";
+import { View, Text } from "react-native";
 import * as Font from "expo-font";
 import { Slot, useRouter, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import * as SystemUI from "expo-system-ui";
-import { ClerkProvider, ClerkLoaded, useAuth, tokenCache } from "@/lib/clerk";
+import { ClerkProvider, ClerkLoaded, useAuth, tokenCache, isMockMode } from "@/lib/clerk";
 import { PostHogProvider, usePostHog } from "posthog-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -17,11 +18,7 @@ import { posthog } from "@/lib/posthog";
 
 void SplashScreen.preventAutoHideAsync();
 
-const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
-
-if (!publishableKey) {
-  throw new Error("Add your Clerk Publishable Key to the .env file");
-}
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_placeholder";
 
 function InitialLayout() {
   const { isLoaded, isSignedIn, userId } = useAuth();
@@ -115,6 +112,14 @@ export default function RootLayout() {
       void SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
+
+  // Fallback to hide splash screen if it hangs
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      void SplashScreen.hideAsync();
+    }, 5000);
+    return () => clearTimeout(timeout);
+  }, []);
 
   if (!fontsLoaded) {
     return null;
