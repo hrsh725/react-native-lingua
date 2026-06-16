@@ -21,7 +21,7 @@
       "package": "com.anonymous.duolingo"
     },
     "web": {
-      "output": "static",
+      "output": "server",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
@@ -39,7 +39,21 @@
       "@clerk/expo",
       "expo-secure-store",
       "expo-web-browser",
-      "expo-image"
+      "expo-image",
+      [
+        "@stream-io/video-react-native-sdk",
+        {
+          "microphonePermission": "Allow Lingua to access your microphone"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 24
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

@@ -1,7 +1,7 @@
 import { useAuth, useUser } from "@/lib/clerk";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link, useRouter } from "expo-router";
-import { SymbolView } from "expo-symbols";
+import { SymbolView } from "@/components/SymbolView";
 import {
   Image,
   Pressable,

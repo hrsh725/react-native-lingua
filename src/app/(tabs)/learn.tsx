@@ -10,7 +10,7 @@ import {
   Platform,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { SymbolView } from "expo-symbols";
+import { SymbolView } from "@/components/SymbolView";
 
 import { useLanguageStore } from "@/store/languageStore";
 import { lessons } from "@/data/lessons";

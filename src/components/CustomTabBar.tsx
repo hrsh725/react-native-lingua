@@ -5,7 +5,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import { SymbolView } from "expo-symbols";
+import { SymbolView } from "@/components/SymbolView";
 
 type TabButtonProps = {
   route: any;

@@ -1,138 +1,99 @@
+import "../lib/polyfills";
 import "../../global.css";
 
-import { useEffect, useRef } from "react";
-import { View, Text } from "react-native";
+import { useEffect, useState } from "react";
+import { View, Text, Platform, StyleSheet } from "react-native";
 import * as Font from "expo-font";
 import { Slot, useRouter, useSegments } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import * as SystemUI from "expo-system-ui";
-import { ClerkProvider, ClerkLoaded, useAuth, tokenCache, isMockMode } from "@/lib/clerk";
-import { PostHogProvider, usePostHog } from "posthog-react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import { designTokens } from "@/theme";
+import { ClerkProvider, ClerkLoaded, useAuth } from "@/lib/clerk";
+import { StreamProvider } from "@/components/StreamProvider";
 import { useLanguageStore } from "@/store/languageStore";
-import { languages } from "@/data/languages";
-import { posthog } from "@/lib/posthog";
-
-void SplashScreen.preventAutoHideAsync();
-
-const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_placeholder";
 
 function InitialLayout() {
-  const { isLoaded, isSignedIn, userId } = useAuth();
-  const segments = useSegments();
   const router = useRouter();
-  const { selectedLanguageId, _hasHydrated } = useLanguageStore();
-  const phClient = usePostHog();
-  const lastIdentifiedRef = useRef<{ userId: string; languageId: string | null } | null>(null);
-
-  useEffect(() => {
-    if (!isLoaded || !_hasHydrated || !phClient) return;
-
-    if (isSignedIn && userId) {
-      if (
-        lastIdentifiedRef.current?.userId !== userId ||
-        lastIdentifiedRef.current?.languageId !== selectedLanguageId
-      ) {
-        const runIdentify = async () => {
-          try {
-            const isSignUp = await AsyncStorage.getItem("just_signed_up");
-            const preferredLanguage = selectedLanguageId
-              ? languages.find((l) => l.id === selectedLanguageId)?.name || null
-              : null;
-
-            if (isSignUp === "true") {
-              phClient.identify(userId, {
-                $set: { preferred_language: preferredLanguage },
-                $set_once: { signup_date: new Date().toISOString() }
-              });
-              await AsyncStorage.removeItem("just_signed_up");
-            } else {
-              phClient.identify(userId, {
-                $set: { preferred_language: preferredLanguage }
-              });
-            }
-            lastIdentifiedRef.current = { userId, languageId: selectedLanguageId };
-          } catch (err) {
-            console.error("Error identifying user in PostHog:", err);
-          }
-        };
-
-        void runIdentify();
-      }
-    } else {
-      lastIdentifiedRef.current = null;
-    }
-  }, [isSignedIn, userId, isLoaded, _hasHydrated, selectedLanguageId, phClient]);
+  const segments = useSegments();
+  const { isLoaded, isSignedIn } = useAuth();
+  const { _hasHydrated } = useLanguageStore();
 
   useEffect(() => {
     if (!isLoaded || !_hasHydrated) return;
 
-    const inAuthGroup = segments[0] === "signin" || segments[0] === "signup" || segments[0] === "onboarding" || segments[0] === "verify-otp";
-    const onChooseLanguage = segments[0] === "choose-language";
+    const root = (segments && segments.length > 0) ? segments[0] : "";
 
     if (isSignedIn) {
-      if (!selectedLanguageId) {
-        if (!onChooseLanguage) {
-          router.replace("/choose-language");
-        }
-      } else {
-        if (inAuthGroup) {
-          router.replace("/");
-        }
+      if (root === "onboarding" || root === "signin" || root === "signup" || root === "") {
+        router.replace("/(tabs)");
       }
     } else {
-      if (!inAuthGroup && !onChooseLanguage) {
+      if (root !== "onboarding" && root !== "signin" && root !== "signup") {
         router.replace("/onboarding");
       }
     }
-  }, [isSignedIn, isLoaded, _hasHydrated, selectedLanguageId, segments, router]);
+  }, [isLoaded, isSignedIn, segments, _hasHydrated]);
 
   return <Slot />;
 }
 
 export default function RootLayout() {
-  const [fontsLoaded] = Font.useFonts({
+  const [fontsLoaded, fontError] = Font.useFonts({
     "Poppins-Regular": require("../../assets/fonts/Poppins-Regular.ttf"),
     "Poppins-Medium": require("../../assets/fonts/Poppins-Medium.ttf"),
     "Poppins-SemiBold": require("../../assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Bold": require("../../assets/fonts/Poppins-Bold.ttf"),
   });
 
+  const [isClient, setIsClient] = useState(false);
+
   useEffect(() => {
-    void SystemUI.setBackgroundColorAsync(
-      designTokens.colors.neutral.background
-    );
+    setIsClient(true);
   }, []);
 
-  useEffect(() => {
-    if (fontsLoaded) {
-      void SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  // Fallback to hide splash screen if it hangs
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      void SplashScreen.hideAsync();
-    }, 5000);
-    return () => clearTimeout(timeout);
-  }, []);
-
-  if (!fontsLoaded) {
-    return null;
+  if (fontError) {
+    console.error("Font Load Error:", fontError);
   }
 
+  // Pure HTML fallback for Web to guarantee something shows up immediately
+  if (Platform.OS === 'web' && !isClient) {
+    return (
+        <div style={{ backgroundColor: '#5B3BF6', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontFamily: 'sans-serif' }}>
+            <h1>Starting Lingua...</h1>
+        </div>
+    );
+  }
+
+  if (!fontsLoaded && !fontError) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>Loading Resources...</Text>
+      </View>
+    );
+  }
+
+  const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_placeholder";
+
   return (
-    <PostHogProvider client={posthog}>
-      <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-        <ClerkLoaded>
+    <ClerkProvider publishableKey={publishableKey}>
+      <ClerkLoaded>
+        <StreamProvider>
           <InitialLayout />
           <StatusBar style="dark" />
-        </ClerkLoaded>
-      </ClerkProvider>
-    </PostHogProvider>
+        </StreamProvider>
+      </ClerkLoaded>
+    </ClerkProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: "#5B3BF6",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  loadingText: {
+    color: "#FFF",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+});

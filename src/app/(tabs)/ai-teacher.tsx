@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
+import { SymbolView } from "@/components/SymbolView";
 
 import { useLanguageStore } from "@/store/languageStore";
 import { lessons } from "@/data/lessons";

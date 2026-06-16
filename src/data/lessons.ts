@@ -62,6 +62,13 @@ export const lessons: Lesson[] = [
         context: 'A friendly greeting to ask about someone\'s well-being.',
       },
     ],
+    aiPrompt: {
+      teacherName: 'Sofía',
+      avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150',
+      systemPrompt: "You're Sofía, a super energetic and warm Spanish teacher. You're so excited to meet a new student! Keep your energy high, use lots of positive reinforcement, and focus strictly on basic greetings like 'Hola' and 'Adiós'.",
+      initialMessage: "¡Hola! I'm Sofía, and I'm thrilled to help you start your Spanish journey! Ready to learn some friendly greetings? ¿Estás listo?",
+      scenarioDescription: 'Practice basic greetings and saying hello/goodbye with Sofía.',
+    },
     activities: [
       {
         id: 'es-act-1',
@@ -100,9 +107,9 @@ export const lessons: Lesson[] = [
       teacherName: 'Sofía',
       avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150',
       voiceId: 'es-ES-Neural2-F',
-      systemPrompt: 'You are Sofía, a friendly barista. Help the user order a drink.',
-      initialMessage: '¡Hola! Bienvenidos. ¿Qué te pongo hoy?',
-      scenarioDescription: 'Practice ordering a coffee from Sofía.',
+      systemPrompt: "You're Sofía, a super warm and energetic barista in Madrid. You love meeting new students! Help them order a drink in Spanish with lots of gentle encouragement and natural conversational flow. Stick to cafe vocabulary.",
+      initialMessage: '¡Hola! Bienvenidos! I am so happy to see you today! What can I get for you? ¿Qué te pongo hoy?',
+      scenarioDescription: 'Practice ordering a coffee from the friendly Sofía.',
     },
     activities: [
       {
@@ -129,6 +136,13 @@ export const lessons: Lesson[] = [
         targetSkill: 'speaking',
       },
     ],
+    aiPrompt: {
+      teacherName: 'Sofía',
+      avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150',
+      systemPrompt: "You're Sofía, an energetic barista in a sun-drenched Madrid plaza. You're warm, helpful, and love it when students try to order in Spanish. Keep your sentences short and encouraging!",
+      initialMessage: "¡Buenos días! Welcome to my cafe. I'm Sofía! Ready to practice ordering your favorite drink? ¿Qué quieres tomar?",
+      scenarioDescription: 'Master the art of cafe conversation with Sofía in Madrid.',
+    },
     activities: [
       {
         id: 'es-act-7',
@@ -154,6 +168,13 @@ export const lessons: Lesson[] = [
         targetSkill: 'listening',
       },
     ],
+    aiPrompt: {
+      teacherName: 'Mateo',
+      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+      systemPrompt: "You're Mateo, a friendly and high-energy local guide in Barcelona. You're passionate about helping students navigate your city! Focus strictly on 'izquierda', 'derecha', and 'recto'.",
+      initialMessage: "¡Hola! I'm Mateo. I'm so excited to help you find your way around! Ready to learn some simple directions? ¿Estás listo?",
+      scenarioDescription: 'Learn to navigate the streets of Barcelona with Mateo.',
+    },
     activities: [
       {
         id: 'es-act-14',
@@ -161,85 +182,6 @@ export const lessons: Lesson[] = [
         prompt: 'What is the Spanish word for "Left"?',
         options: ['Derecha', 'Izquierda', 'Derecho', 'Girar'],
         correctAnswer: 'Izquierda',
-      },
-    ],
-  },
-  {
-    id: 'es-u1-l5',
-    unitId: 'es-unit-1',
-    title: 'Shopping',
-    description: 'Learn terms for clothing items and asking for prices.',
-    order: 5,
-    xp: 15,
-    type: 'vocabulary',
-    goals: [
-      {
-        id: 'es-goal-15',
-        description: 'Ask for prices and name clothes',
-        targetSkill: 'vocabulary',
-      },
-    ],
-    activities: [
-      {
-        id: 'es-act-15',
-        type: 'multiple_choice',
-        prompt: 'How do you ask "How much is it?" in Spanish?',
-        options: ['¿Cuánto cuesta?', '¿Dónde está?', '¿Qué es esto?', 'Mucho gusto'],
-        correctAnswer: '¿Cuánto cuesta?',
-      },
-    ],
-  },
-  {
-    id: 'es-u1-l6',
-    unitId: 'es-unit-1',
-    title: 'Family & Friends',
-    description: 'Introduce family members and describe relationships.',
-    order: 6,
-    xp: 15,
-    type: 'vocabulary',
-    goals: [
-      {
-        id: 'es-goal-16',
-        description: 'Identify family members',
-        targetSkill: 'vocabulary',
-      },
-    ],
-    activities: [
-      {
-        id: 'es-act-16',
-        type: 'multiple_choice',
-        prompt: 'What is the Spanish word for "Mother"?',
-        options: ['Padre', 'Madre', 'Hermano', 'Amigo'],
-        correctAnswer: 'Madre',
-      },
-    ],
-  },
-
-  // ==========================================
-  // SPANISH LESSONS (Unit 2: Travel & Directions)
-  // ==========================================
-  {
-    id: 'es-u2-l1',
-    unitId: 'es-unit-2',
-    title: 'Asking for Directions',
-    description: 'Navigate your way through Spanish-speaking cities using directions.',
-    order: 1,
-    xp: 15,
-    type: 'audio',
-    goals: [
-      {
-        id: 'es-goal-7',
-        description: 'Ask for the location of transit stations',
-        targetSkill: 'listening',
-      },
-    ],
-    activities: [
-      {
-        id: 'es-act-10',
-        type: 'multiple_choice',
-        prompt: 'What does "Gira a la izquierda" mean?',
-        options: ['Go straight ahead', 'Turn right', 'Turn left', 'Stop here'],
-        correctAnswer: 'Turn left',
       },
     ],
   },
@@ -273,6 +215,13 @@ export const lessons: Lesson[] = [
         exampleTranslation: 'Hello, how are you?',
       },
     ],
+    aiPrompt: {
+      teacherName: 'Chloé',
+      avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150',
+      systemPrompt: "You're Chloé, a warm and very energetic French teacher. You're thrilled to welcome a new student to the world of French! Keep it bright, encouraging, and focused on 'Bonjour' and 'Salut'.",
+      initialMessage: "Bonjour! I'm Chloé, and I'm so happy to be your teacher today! Ready to learn your very first French words? On y va ?",
+      scenarioDescription: 'Begin your French journey with foundational greetings from Chloé.',
+    },
     activities: [
       {
         id: 'fr-act-1',
@@ -280,31 +229,6 @@ export const lessons: Lesson[] = [
         prompt: 'Select the correct translation for "Bonjour"',
         options: ['Goodbye', 'Thank you', 'Please', 'Hello'],
         correctAnswer: 'Hello',
-      },
-    ],
-  },
-  {
-    id: 'fr-u1-l2',
-    unitId: 'fr-unit-1',
-    title: 'Daily Life',
-    description: 'Learn to talk about your daily routines in simple French.',
-    order: 2,
-    xp: 15,
-    type: 'vocabulary',
-    goals: [
-      {
-        id: 'fr-goal-2',
-        description: 'Discuss basic routines',
-        targetSkill: 'vocabulary',
-      },
-    ],
-    activities: [
-      {
-        id: 'fr-act-2',
-        type: 'multiple_choice',
-        prompt: 'How do you say "Goodnight" in French?',
-        options: ['Bonjour', 'Bonsoir', 'Bonne nuit', 'Salut'],
-        correctAnswer: 'Bonne nuit',
       },
     ],
   },
@@ -326,9 +250,9 @@ export const lessons: Lesson[] = [
     aiPrompt: {
       teacherName: 'Chloé',
       avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150',
-      systemPrompt: 'You are Chloé, a friendly Parisian barista. Help the user order a croissant.',
-      initialMessage: 'Bonjour! Bienvenue. Qu\'est-ce que je vous sers?',
-      scenarioDescription: 'Order coffee and a pastry at a beautiful Parisian café.',
+      systemPrompt: "You're Chloé, a warm and welcoming Parisian barista. You're energetic and love teaching others how to order in your beautiful city! Use contractions and lots of praise. Focus on cafe items.",
+      initialMessage: "Bonjour! Bienvenue. I'm Chloé, and I'm so excited to help you practice! What can I serve you today? Qu'est-ce que je vous sers ?",
+      scenarioDescription: 'Order coffee and a pastry at a beautiful Parisian café with Chloé.',
     },
     activities: [
       {
@@ -337,81 +261,6 @@ export const lessons: Lesson[] = [
         prompt: 'What does "S\'il vous plaît" mean?',
         options: ['Thank you', 'Please', 'Excuse me', 'Hello'],
         correctAnswer: 'Please',
-      },
-    ],
-  },
-  {
-    id: 'fr-u1-l4',
-    unitId: 'fr-unit-1',
-    title: 'Travel & Directions',
-    description: 'Learn to navigate around French cities and transit stations.',
-    order: 4,
-    xp: 15,
-    type: 'audio',
-    goals: [
-      {
-        id: 'fr-goal-4',
-        description: 'Ask for and follow directions',
-        targetSkill: 'listening',
-      },
-    ],
-    activities: [
-      {
-        id: 'fr-act-4',
-        type: 'multiple_choice',
-        prompt: 'How do you say "Where is the station?" in French?',
-        options: ['Où est la gare ?', 'Où est l\'hôtel ?', 'C\'est combien ?', 'Merci'],
-        correctAnswer: 'Où est la gare ?',
-      },
-    ],
-  },
-  {
-    id: 'fr-u1-l5',
-    unitId: 'fr-unit-1',
-    title: 'Shopping',
-    description: 'Practice shopping for clothes and souvenirs in French boutiques.',
-    order: 5,
-    xp: 15,
-    type: 'vocabulary',
-    goals: [
-      {
-        id: 'fr-goal-5',
-        description: 'Ask for sizes and prices',
-        targetSkill: 'vocabulary',
-      },
-    ],
-    activities: [
-      {
-        id: 'fr-act-5',
-        type: 'multiple_choice',
-        prompt: 'Translate: "Ça coûte combien ?"',
-        options: ['Where is it?', 'How much does it cost?', 'What is this?', 'Goodbye'],
-        correctAnswer: 'How much does it cost?',
-      },
-    ],
-  },
-  {
-    id: 'fr-u1-l6',
-    unitId: 'fr-unit-1',
-    title: 'Family & Friends',
-    description: 'Talk about your family members and introduce your friends.',
-    order: 6,
-    xp: 15,
-    type: 'vocabulary',
-    goals: [
-      {
-        id: 'fr-goal-6',
-        description: 'Describe family members',
-        targetSkill: 'vocabulary',
-      },
-    ],
-    activities: [
-      {
-        id: 'fr-act-6',
-        type: 'multiple_choice',
-        prompt: 'What is the French word for "Brother"?',
-        options: ['Père', 'Mère', 'Frère', 'Sœur'],
-        correctAnswer: 'Frère',
       },
     ],
   },
@@ -434,6 +283,13 @@ export const lessons: Lesson[] = [
         targetSkill: 'vocabulary',
       },
     ],
+    aiPrompt: {
+      teacherName: 'Kenji',
+      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+      systemPrompt: "You're Kenji, a super energetic and helpful Japanese teacher. You love meeting new students! Be patient, use a warm tone, and focus strictly on greetings like 'Konnichiwa' and 'Arigatou'.",
+      initialMessage: "Konnichiwa! I'm Kenji, and I'm so excited to help you learn Japanese! Ready to start with some friendly greetings? Hajimemashou!",
+      scenarioDescription: 'Learn essential Japanese greetings with the enthusiastic Kenji.',
+    },
     activities: [
       {
         id: 'ja-act-1',
@@ -441,31 +297,6 @@ export const lessons: Lesson[] = [
         prompt: 'Select the translation for "こんにちは (Konnichiwa)"',
         options: ['Goodbye', 'Hello', 'Thank you', 'Excuse me'],
         correctAnswer: 'Hello',
-      },
-    ],
-  },
-  {
-    id: 'ja-u1-l2',
-    unitId: 'ja-unit-1',
-    title: 'Daily Life',
-    description: 'Understand everyday words for routines and times.',
-    order: 2,
-    xp: 15,
-    type: 'vocabulary',
-    goals: [
-      {
-        id: 'ja-goal-2',
-        description: 'Discuss basic routines',
-        targetSkill: 'vocabulary',
-      },
-    ],
-    activities: [
-      {
-        id: 'ja-act-2',
-        type: 'multiple_choice',
-        prompt: 'How do you say "Good morning" politely in Japanese?',
-        options: ['こんにちは (Konnichiwa)', 'おやすみなさい (Oyasuminasai)', 'おはようございます (Ohayou gozaimasu)', 'さようなら (Sayounara)'],
-        correctAnswer: 'おはようございます (Ohayou gozaimasu)',
       },
     ],
   },
@@ -487,9 +318,9 @@ export const lessons: Lesson[] = [
     aiPrompt: {
       teacherName: 'Kenji',
       avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
-      systemPrompt: 'You are Kenji, a helpful server. Help the user order green tea.',
-      initialMessage: 'いらっしゃいませ！ご注文はお決まりですか？',
-      scenarioDescription: 'Order a cup of green tea (ocha) in Japanese.',
+      systemPrompt: "You're Kenji, an energetic and incredibly patient server in Kyoto. You love it when students try to speak Japanese! Guide them through ordering tea with a warm, high-energy vibe. Stick to tea house vocabulary.",
+      initialMessage: 'Irasshaimase! いらっしゃいませ！ Welcome to our tea house! I am so happy you are here. Have you decided on your order? ご注文はお決まりですか？',
+      scenarioDescription: 'Order a cup of green tea (ocha) in Japanese with Kenji.',
     },
     activities: [
       {
@@ -498,81 +329,6 @@ export const lessons: Lesson[] = [
         prompt: 'How do you say "Please give me water"?',
         options: ['お水をください (Omizu o kudasai)', 'こんにちは (Konnichiwa)', 'ありがとう (Arigatou)', 'さようなら (Sayounara)'],
         correctAnswer: 'お水をください (Omizu o kudasai)',
-      },
-    ],
-  },
-  {
-    id: 'ja-u1-l4',
-    unitId: 'ja-unit-1',
-    title: 'Travel & Directions',
-    description: 'Learn directions and how to ask for locations in Tokyo.',
-    order: 4,
-    xp: 15,
-    type: 'audio',
-    goals: [
-      {
-        id: 'ja-goal-4',
-        description: 'Navigate using transit and directions',
-        targetSkill: 'listening',
-      },
-    ],
-    activities: [
-      {
-        id: 'ja-act-4',
-        type: 'multiple_choice',
-        prompt: 'What does "駅はどこですか？ (Eki wa doko desu ka?)" mean?',
-        options: ['Where is the station?', 'Where is the hotel?', 'Where is the bathroom?', 'How much is it?'],
-        correctAnswer: 'Where is the station?',
-      },
-    ],
-  },
-  {
-    id: 'ja-u1-l5',
-    unitId: 'ja-unit-1',
-    title: 'Shopping',
-    description: 'Learn how to ask for prices and buy souvenirs in Akihabara.',
-    order: 5,
-    xp: 15,
-    type: 'vocabulary',
-    goals: [
-      {
-        id: 'ja-goal-5',
-        description: 'Inquire about prices',
-        targetSkill: 'vocabulary',
-      },
-    ],
-    activities: [
-      {
-        id: 'ja-act-5',
-        type: 'multiple_choice',
-        prompt: 'How do you ask "How much is this?" in Japanese?',
-        options: ['これはいくらですか？ (Kore wa ikura desu ka?)', 'これは何ですか？ (Kore wa nan desu ka?)', 'すみません (Sumimasen)', 'ありがとう (Arigatou)'],
-        correctAnswer: 'これはいくらですか？ (Kore wa ikura desu ka?)',
-      },
-    ],
-  },
-  {
-    id: 'ja-u1-l6',
-    unitId: 'ja-unit-1',
-    title: 'Family & Friends',
-    description: 'Describe family members and introducing someone.',
-    order: 6,
-    xp: 15,
-    type: 'vocabulary',
-    goals: [
-      {
-        id: 'ja-goal-6',
-        description: 'Name basic family roles',
-        targetSkill: 'vocabulary',
-      },
-    ],
-    activities: [
-      {
-        id: 'ja-act-6',
-        type: 'multiple_choice',
-        prompt: 'What is the Japanese word for "Father" when talking to others?',
-        options: ['父 (Chichi)', '母 (Haha)', '友達 (Tomodachi)', '先生 (Sensei)'],
-        correctAnswer: '父 (Chichi)',
       },
     ],
   },
@@ -595,6 +351,13 @@ export const lessons: Lesson[] = [
         targetSkill: 'vocabulary',
       },
     ],
+    aiPrompt: {
+      teacherName: 'Minjun',
+      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+      systemPrompt: "You're Minjun, a high-energy and very encouraging Korean teacher. You're so excited to help a new student! Be patient, warm, and highly supportive. Focus on 'Annyeonghaseyo' and 'Gamsahabnida'.",
+      initialMessage: "Annyeonghaseyo! I'm Minjun, and I'm thrilled to be your teacher today! Ready to learn your first Korean greetings? Shijak-haebolkayo?",
+      scenarioDescription: 'Learn foundational Korean greetings with the energetic Minjun.',
+    },
     activities: [
       {
         id: 'ko-act-1',
@@ -602,31 +365,6 @@ export const lessons: Lesson[] = [
         prompt: 'Select the correct translation for "안녕하세요 (Annyeonghaseyo)"',
         options: ['Goodbye', 'Thank you', 'Hello', 'Please'],
         correctAnswer: 'Hello',
-      },
-    ],
-  },
-  {
-    id: 'ko-u1-l2',
-    unitId: 'ko-unit-1',
-    title: 'Daily Life',
-    description: 'Learn common daily words and simple time phrases.',
-    order: 2,
-    xp: 15,
-    type: 'vocabulary',
-    goals: [
-      {
-        id: 'ko-goal-2',
-        description: 'Discuss basic routines',
-        targetSkill: 'vocabulary',
-      },
-    ],
-    activities: [
-      {
-        id: 'ko-act-2',
-        type: 'multiple_choice',
-        prompt: 'How do you say "Goodnight" in polite Korean?',
-        options: ['안녕하세요 (Annyeonghaseyo)', '안녕히 주무세요 (Annyeonghi jumuseyo)', '감사합니다 (Gamsahabnida)', '죄송합니다 (Joesonghabnida)'],
-        correctAnswer: '안녕히 주무세요 (Annyeonghi jumuseyo)',
       },
     ],
   },
@@ -648,9 +386,9 @@ export const lessons: Lesson[] = [
     aiPrompt: {
       teacherName: 'Minjun',
       avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
-      systemPrompt: 'You are Minjun, a friendly barista in Seoul. Help the user order an iced americano.',
-      initialMessage: '어서 오세요! 어떤 걸로 주문하시겠어요?',
-      scenarioDescription: 'Order an iced americano (아아) in Korean.',
+      systemPrompt: "You're Minjun, a high-energy and very encouraging barista in a trendy Seoul cafe. You make learning Korean feel fun and easy! Be patient, warm, and highly supportive. Stick to cafe items.",
+      initialMessage: "Eoseo oseyo! 어서 오세요! Welcome to our cafe! I'm Minjun, and I'm so excited to help you order! What would you like? 어떤 걸로 주문하시겠어요?",
+      scenarioDescription: 'Order an iced americano (아아) in Korean with the friendly Minjun.',
     },
     activities: [
       {
@@ -659,81 +397,6 @@ export const lessons: Lesson[] = [
         prompt: 'How do you say "Iced Americano, please"?',
         options: ['아이스 아메리카노 주세요 (Aiseu amerikanoh juseyo)', '물 주세요 (Mul juseyo)', '안녕하세요 (Annyeonghaseyo)', '감사합니다 (Gamsahabnida)'],
         correctAnswer: '아이스 아메리카노 주세요 (Aiseu amerikanoh juseyo)',
-      },
-    ],
-  },
-  {
-    id: 'ko-u1-l4',
-    unitId: 'ko-unit-1',
-    title: 'Travel & Directions',
-    description: 'Learn directions and how to ask for places in Korea.',
-    order: 4,
-    xp: 15,
-    type: 'audio',
-    goals: [
-      {
-        id: 'ko-goal-4',
-        description: 'Navigate transit locations',
-        targetSkill: 'listening',
-      },
-    ],
-    activities: [
-      {
-        id: 'ko-act-4',
-        type: 'multiple_choice',
-        prompt: 'What does "지하철역이 어디예요? (Jihachyeol-yeogi eodiyeyo?)" mean?',
-        options: ['Where is the subway station?', 'Where is the restroom?', 'Where is the hotel?', 'How much is it?'],
-        correctAnswer: 'Where is the subway station?',
-      },
-    ],
-  },
-  {
-    id: 'ko-u1-l5',
-    unitId: 'ko-unit-1',
-    title: 'Shopping',
-    description: 'Learn shopping phrases for cosmetics and fashion items.',
-    order: 5,
-    xp: 15,
-    type: 'vocabulary',
-    goals: [
-      {
-        id: 'ko-goal-5',
-        description: 'Ask for prices and make payments',
-        targetSkill: 'vocabulary',
-      },
-    ],
-    activities: [
-      {
-        id: 'ko-act-5',
-        type: 'multiple_choice',
-        prompt: 'How do you ask "How much is this?" in Korean?',
-        options: ['이거 얼마예요? (Igeo eolmayeyo?)', '이게 뭐예요? (Ige moyeyo?)', '도와주세요 (Dowajuseyo)', '고맙습니다 (Gomapseumnida)'],
-        correctAnswer: '이거 얼마예요? (Igeo eolmayeyo?)',
-      },
-    ],
-  },
-  {
-    id: 'ko-u1-l6',
-    unitId: 'ko-unit-1',
-    title: 'Family & Friends',
-    description: 'Describe family members and talk about relationships.',
-    order: 6,
-    xp: 15,
-    type: 'vocabulary',
-    goals: [
-      {
-        id: 'ko-goal-6',
-        description: 'Name core family relationships',
-        targetSkill: 'vocabulary',
-      },
-    ],
-    activities: [
-      {
-        id: 'ko-act-6',
-        type: 'multiple_choice',
-        prompt: 'What is the Korean word for "Mother"?',
-        options: ['어머니 (Eomeoni)', '아버지 (Abeoji)', '동생 (Dongsaeng)', '친구 (Chingu)'],
-        correctAnswer: '어머니 (Eomeoni)',
       },
     ],
   },
@@ -756,6 +419,13 @@ export const lessons: Lesson[] = [
         targetSkill: 'vocabulary',
       },
     ],
+    aiPrompt: {
+      teacherName: 'Emma',
+      avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
+      systemPrompt: "You're Emma, a warm and very energetic German teacher. You're so happy to see a new student starting German! Keep it bright, encouraging, and focused strictly on 'Hallo' and 'Guten Tag'.",
+      initialMessage: "Hallo! I'm Emma, and I'm so excited to help you start your German journey! Ready to learn some friendly greetings? Los geht's!",
+      scenarioDescription: 'Practice basic German greetings with the enthusiastic Emma.',
+    },
     activities: [
       {
         id: 'de-act-1',
@@ -763,138 +433,6 @@ export const lessons: Lesson[] = [
         prompt: 'Select the correct translation for "Hallo"',
         options: ['Goodbye', 'Please', 'Hello', 'Yes'],
         correctAnswer: 'Hello',
-      },
-    ],
-  },
-  {
-    id: 'de-u1-l2',
-    unitId: 'de-unit-1',
-    title: 'Daily Life',
-    description: 'Learn vocabulary for daily activities and routines.',
-    order: 2,
-    xp: 15,
-    type: 'vocabulary',
-    goals: [
-      {
-        id: 'de-goal-2',
-        description: 'Introduce daily routine terms',
-        targetSkill: 'vocabulary',
-      },
-    ],
-    activities: [
-      {
-        id: 'de-act-2',
-        type: 'multiple_choice',
-        prompt: 'How do you say "Goodnight" in German?',
-        options: ['Guten Morgen', 'Guten Abend', 'Gute Nacht', 'Tschüss'],
-        correctAnswer: 'Gute Nacht',
-      },
-    ],
-  },
-  {
-    id: 'de-u1-l3',
-    unitId: 'de-unit-1',
-    title: 'At the Café',
-    description: 'Practice ordering coffee or beer and pretzels in Munich.',
-    order: 3,
-    xp: 20,
-    type: 'chat',
-    goals: [
-      {
-        id: 'de-goal-3',
-        description: 'Order food and drinks',
-        targetSkill: 'chat',
-      },
-    ],
-    aiPrompt: {
-      teacherName: 'Lukas',
-      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
-      systemPrompt: 'You are Lukas, a friendly Munich waiter. Help the user order a beer.',
-      initialMessage: 'Hallo! Willkommen. Was kann ich Ihnen bringen?',
-      scenarioDescription: 'Order a local beer (Bier) in German.',
-    },
-    activities: [
-      {
-        id: 'de-act-3',
-        type: 'multiple_choice',
-        prompt: 'How do you say "A beer, please"?',
-        options: ['Ein Bier, bitte', 'Ein Kaffee, bitte', 'Danke', 'Guten Tag'],
-        correctAnswer: 'Ein Bier, bitte',
-      },
-    ],
-  },
-  {
-    id: 'de-u1-l4',
-    unitId: 'de-unit-1',
-    title: 'Travel & Directions',
-    description: 'Learn directions and asking how to get to train stations.',
-    order: 4,
-    xp: 15,
-    type: 'audio',
-    goals: [
-      {
-        id: 'de-goal-4',
-        description: 'Navigate transit locations',
-        targetSkill: 'listening',
-      },
-    ],
-    activities: [
-      {
-        id: 'de-act-4',
-        type: 'multiple_choice',
-        prompt: 'Translate: "Wo ist der Bahnhof?"',
-        options: ['Where is the station?', 'Where is the hotel?', 'Where is the restroom?', 'How much is it?'],
-        correctAnswer: 'Where is the station?',
-      },
-    ],
-  },
-  {
-    id: 'de-u1-l5',
-    unitId: 'de-unit-1',
-    title: 'Shopping',
-    description: 'Learn basic terms for currency, clothing, and purchasing.',
-    order: 5,
-    xp: 15,
-    type: 'vocabulary',
-    goals: [
-      {
-        id: 'de-goal-5',
-        description: 'Ask for prices',
-        targetSkill: 'vocabulary',
-      },
-    ],
-    activities: [
-      {
-        id: 'de-act-5',
-        type: 'multiple_choice',
-        prompt: 'Translate: "Wie viel kostet das?"',
-        options: ['How much does this cost?', 'Where is the hotel?', 'What is that?', 'Goodbye'],
-        correctAnswer: 'How much does this cost?',
-      },
-    ],
-  },
-  {
-    id: 'de-u1-l6',
-    unitId: 'de-unit-1',
-    title: 'Family & Friends',
-    description: 'Describe your parents, siblings, and friends.',
-    order: 6,
-    xp: 15,
-    type: 'vocabulary',
-    goals: [
-      {
-        id: 'de-goal-6',
-        description: 'Describe family members',
-        targetSkill: 'vocabulary',
-      },
-    ],
-    activities: [
-      {
-        id: 'de-act-6',
-        type: 'multiple_choice',
-        prompt: 'What is the German word for "Brother"?',
-        options: ['Vater', 'Mutter', 'Bruder', 'Schwester'],
-        correctAnswer: 'Bruder',
       },
     ],
   },
@@ -917,6 +455,13 @@ export const lessons: Lesson[] = [
         targetSkill: 'vocabulary',
       },
     ],
+    aiPrompt: {
+      teacherName: 'Mei',
+      avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150',
+      systemPrompt: "You're Mei, a warm, energetic, and patient Chinese teacher. You love sharing your culture and teaching Chinese! Be very encouraging and focused strictly on 'Nǐ hǎo'.",
+      initialMessage: "Nǐ hǎo! I'm Mei, and I'm so happy to help you start learning Chinese! Ready to practice your very first greeting? Wǒmen kāishǐ ba!",
+      scenarioDescription: 'Begin your Chinese journey with essential greetings from the friendly Mei.',
+    },
     activities: [
       {
         id: 'zh-act-1',
@@ -924,138 +469,6 @@ export const lessons: Lesson[] = [
         prompt: 'Select the translation for "你好 (Nǐ hǎo)"',
         options: ['Thank you', 'Hello', 'Goodbye', 'Excuse me'],
         correctAnswer: 'Hello',
-      },
-    ],
-  },
-  {
-    id: 'zh-u1-l2',
-    unitId: 'zh-unit-1',
-    title: 'Daily Life',
-    description: 'Learn names of common daily objects and time concepts.',
-    order: 2,
-    xp: 15,
-    type: 'vocabulary',
-    goals: [
-      {
-        id: 'zh-goal-2',
-        description: 'Discuss routines and items',
-        targetSkill: 'vocabulary',
-      },
-    ],
-    activities: [
-      {
-        id: 'zh-act-2',
-        type: 'multiple_choice',
-        prompt: 'How do you say "Goodnight" in Chinese?',
-        options: ['早上好 (Zǎoshang hǎo)', '晚安 (Wǎn\'ān)', '谢谢 (Xièxiè)', '再见 (Zàijiàn)'],
-        correctAnswer: '晚安 (Wǎn\'ān)',
-      },
-    ],
-  },
-  {
-    id: 'zh-u1-l3',
-    unitId: 'zh-unit-1',
-    title: 'At the Café',
-    description: 'Practice ordering hot Chinese tea and delicious snacks.',
-    order: 3,
-    xp: 20,
-    type: 'chat',
-    goals: [
-      {
-        id: 'zh-goal-3',
-        description: 'Order tea at a tea house',
-        targetSkill: 'chat',
-      },
-    ],
-    aiPrompt: {
-      teacherName: 'Mei',
-      avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150',
-      systemPrompt: 'You are Mei, a friendly tea house server in Beijing. Help the user order green tea.',
-      initialMessage: '您好！欢迎光临。请问您要喝点什么茶？',
-      scenarioDescription: 'Order a cup of green tea (绿茶) in Chinese.',
-    },
-    activities: [
-      {
-        id: 'zh-act-3',
-        type: 'multiple_choice',
-        prompt: 'How do you say "Green tea, please"?',
-        options: ['请给我绿茶 (Qǐng gěi wǒ lǜchá)', '请给我水 (Qǐng gěi wǒ shuǐ)', '谢谢 (Xièxiè)', '您好 (Nǐ hǎo)'],
-        correctAnswer: '请给我绿茶 (Qǐng gěi wǒ lǜchá)',
-      },
-    ],
-  },
-  {
-    id: 'zh-u1-l4',
-    unitId: 'zh-unit-1',
-    title: 'Travel & Directions',
-    description: 'Learn directions and how to navigate subway stations in China.',
-    order: 4,
-    xp: 15,
-    type: 'audio',
-    goals: [
-      {
-        id: 'zh-goal-4',
-        description: 'Ask for locations and directions',
-        targetSkill: 'listening',
-      },
-    ],
-    activities: [
-      {
-        id: 'zh-act-4',
-        type: 'multiple_choice',
-        prompt: 'Translate: "地铁站在哪里？ (Dìtiězhàn zài nǎlǐ?)"',
-        options: ['Where is the subway station?', 'Where is the hotel?', 'Where is the toilet?', 'How much is it?'],
-        correctAnswer: 'Where is the subway station?',
-      },
-    ],
-  },
-  {
-    id: 'zh-u1-l5',
-    unitId: 'zh-unit-1',
-    title: 'Shopping',
-    description: 'Practice asking for prices and checking out items.',
-    order: 5,
-    xp: 15,
-    type: 'vocabulary',
-    goals: [
-      {
-        id: 'zh-goal-5',
-        description: 'Ask about prices and items',
-        targetSkill: 'vocabulary',
-      },
-    ],
-    activities: [
-      {
-        id: 'zh-act-5',
-        type: 'multiple_choice',
-        prompt: 'How do you ask "How much is this?" in Chinese?',
-        options: ['这个多少钱？ (Zhège duōshǎo qián?)', '这个是什么？ (Zhège shì shénme?)', '谢谢您 (Xièxiè nín)', '对不起 (Duìbùqǐ)'],
-        correctAnswer: '这个多少钱？ (Zhège duōshǎo qián?)',
-      },
-    ],
-  },
-  {
-    id: 'zh-u1-l6',
-    unitId: 'zh-unit-1',
-    title: 'Family & Friends',
-    description: 'Talk about your family members and describe relationships.',
-    order: 6,
-    xp: 15,
-    type: 'vocabulary',
-    goals: [
-      {
-        id: 'zh-goal-6',
-        description: 'Talk about siblings and parents',
-        targetSkill: 'vocabulary',
-      },
-    ],
-    activities: [
-      {
-        id: 'zh-act-6',
-        type: 'multiple_choice',
-        prompt: 'What is the Chinese word for "Older Brother"?',
-        options: ['哥哥 (Gēge)', '弟弟 (Dìdi)', '姐姐 (Jiějie)', '妹妹 (Mèimei)'],
-        correctAnswer: '哥哥 (Gēge)',
       },
     ],
   },
